@@ -1,0 +1,99 @@
+﻿<Window x:Class="FootballPrediction.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Football Predictor"
+        Height="500" Width="900"
+        Background="#12121C">
+
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- SIDEBAR -->
+        <StackPanel Grid.Column="0" Background="#1E1E2F">
+
+            <TextBlock Text="⚽ FMPS"
+                       Foreground="White"
+                       FontSize="22"
+                       FontWeight="Bold"
+                       Margin="15"/>
+
+            <Button Content="Дашборд" Margin="10" Height="35"/>
+            <Button Content="Матчі" Margin="10" Height="35"/>
+            <Button Content="Ліги" Margin="10" Height="35"/>
+
+        </StackPanel>
+
+        <!-- ОСНОВНИЙ КОНТЕНТ -->
+        <Grid Grid.Column="1" Margin="10">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Заголовок -->
+            <TextBlock Text="Дашборд"
+                       Foreground="White"
+                       FontSize="26"
+                       FontWeight="Bold"
+                       Margin="0,0,0,10"/>
+
+            <!-- Панель керування -->
+            <StackPanel Grid.Row="1"
+                        Orientation="Horizontal"
+                        Margin="0,0,0,10">
+
+                <ComboBox x:Name="LeagueComboBox"
+                          Width="180"
+                          Margin="0,0,10,0"
+                          SelectionChanged="LeagueComboBox_SelectionChanged">
+
+                    <ComboBoxItem Content="Premier League"/>
+                    <ComboBoxItem Content="La Liga"/>
+                    <ComboBoxItem Content="Bundesliga"/>
+
+                </ComboBox>
+
+                <Button Content="Аналіз матчу"
+                        Width="150"
+                        Height="30"/>
+
+            </StackPanel>
+
+            <!-- Таблиця матчів -->
+            <ListView Grid.Row="2"
+                      ItemsSource="{Binding Matches}">
+
+                <ListView.View>
+                    <GridView>
+
+                        <GridViewColumn Header="Home"
+                                        DisplayMemberBinding="{Binding HomeTeam}"
+                                        Width="150"/>
+
+                        <GridViewColumn Header="HG"
+                                        DisplayMemberBinding="{Binding HomeGoals}"
+                                        Width="50"/>
+
+                        <GridViewColumn Header="AG"
+                                        DisplayMemberBinding="{Binding AwayGoals}"
+                                        Width="50"/>
+
+                        <GridViewColumn Header="Away"
+                                        DisplayMemberBinding="{Binding AwayTeam}"
+                                        Width="150"/>
+
+                    </GridView>
+                </ListView.View>
+
+            </ListView>
+
+        </Grid>
+
+    </Grid>
+</Window>
