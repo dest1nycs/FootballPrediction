@@ -1,71 +1,141 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading.Tasks;
-using FootballPrediction.ViewModels;
-using FootballPrediction.Models;
+﻿using FootballPrediction.Pages;
+using FootballPrediction.Services;
+using System.Windows;
 
 namespace FootballPrediction
 {
     public partial class MainWindow : Window
     {
-        private MainViewModel viewModel;
-
         public MainWindow()
         {
             InitializeComponent();
 
-            viewModel = new MainViewModel();
-            DataContext = viewModel;
+            // AUTO LOGIN
+
+            bool autoLogin =
+                AuthService.AutoLogin();
+
+            UpdateSidebar();
+
+            MainFrame.Navigate(
+                new DashboardPage());
         }
 
-        private async void LeagueComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        // SIDEBAR UPDATE
+
+        private void UpdateSidebar()
         {
-            var selected = (LeagueComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
+            bool loggedIn =
+                AuthService.CurrentUser != null;
 
-            if (selected == "Premier League")
-                await LoadMatchesFromApi("PL");
+            // LOGGED IN
 
-            else if (selected == "La Liga")
-                await LoadMatchesFromApi("PD");
-
-            else if (selected == "Bundesliga")
-                await LoadMatchesFromApi("BL1");
-        }
-
-        private async Task LoadMatchesFromApi(string leagueCode)
-        {
-            using (var client = new HttpClient())
+            if (loggedIn)
             {
-                client.DefaultRequestHeaders.Add("X-Auth-Token", "0a42a70085f9447da8d4c30c5a65812e");
+                ProfileButton.Visibility =
+                    Visibility.Visible;
 
-                string url = $"https://api.football-data.org/v4/competitions/{leagueCode}/matches?status=SCHEDULED";
+                SettingsButton.Visibility =
+                    Visibility.Visible;
 
-                var response = await client.GetAsync(url);
-                var json = await response.Content.ReadAsStringAsync();
+                LoginButton.Visibility =
+                    Visibility.Collapsed;
 
-                using (JsonDocument doc = JsonDocument.Parse(json))
-                {
-                    var matches = doc.RootElement.GetProperty("matches");
-
-                    viewModel.Matches.Clear();
-
-                    foreach (var match in matches.EnumerateArray())
-                    {
-                        var home = match.GetProperty("homeTeam").GetProperty("name").GetString();
-                        var away = match.GetProperty("awayTeam").GetProperty("name").GetString();
-
-                        viewModel.Matches.Add(new Match
-                        {
-                            HomeTeam = home ?? "",
-                            AwayTeam = away ?? "",
-                            HomeGoals = 0,
-                            AwayGoals = 0
-                        });
-                    }
-                }
+                RegisterButton.Visibility =
+                    Visibility.Collapsed;
             }
+
+            // NOT LOGGED
+
+            else
+            {
+                ProfileButton.Visibility =
+                    Visibility.Collapsed;
+
+                SettingsButton.Visibility =
+                    Visibility.Collapsed;
+
+                LoginButton.Visibility =
+                    Visibility.Visible;
+
+                RegisterButton.Visibility =
+                    Visibility.Visible;
+            }
+        }
+
+        private void DashboardButton_Click(
+            object sender,
+            RoutedEventArgs e)
+        {
+            MainFrame.Navigate(
+                new DashboardPage());
+        }
+
+        private void PredictionsButton_Click(
+            object sender,
+            RoutedEventArgs e)
+        {
+            MainFrame.Navigate(
+                new PredictionsPage());
+        }
+
+        private void LeaguesButton_Click(
+            object sender,
+            RoutedEventArgs e)
+        {
+            MainFrame.Navigate(
+                new LeaguesPage());
+        }
+
+        private void ProfileButton_Click(
+            object sender,
+            RoutedEventArgs e)
+        {
+            if (AuthService.CurrentUser == null)
+            {
+                MessageBox.Show(
+                    "Спочатку увійдіть в акаунт");
+
+                return;
+            }
+
+            MainFrame.Navigate(
+                new ProfilePage());
+        }
+
+        private void SettingsButton_Click(
+            object sender,
+            RoutedEventArgs e)
+        {
+            MainFrame.Navigate(
+                new SettingsPage());
+        }
+
+        // LOGIN
+
+        private void LoginButton_Click(
+            object sender,
+            RoutedEventArgs e)
+        {
+            MainFrame.Navigate(
+                new LoginPage());
+        }
+
+        // REGISTER
+
+        private void RegisterButton_Click(
+            object sender,
+            RoutedEventArgs e)
+        {
+            MainFrame.Navigate(
+                new RegisterPage());
+        }
+
+        // REFRESH SIDEBAR
+
+        public void RefreshUI()
+        {
+            UpdateSidebar();
         }
     }
 }

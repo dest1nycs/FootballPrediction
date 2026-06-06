@@ -1,0 +1,55 @@
+﻿<Page x:Class="FootballPrediction.Pages.SettingsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="#050816">
+
+    <Grid Margin="35">
+
+        <StackPanel>
+
+            <TextBlock Text="НАЛАШТУВАННЯ"
+                       Foreground="White"
+                       FontSize="48"
+                       FontWeight="Bold"/>
+
+            <TextBlock Text="System configuration"
+                       Foreground="#9CA3AF"
+                       FontSize="16"
+                       Margin="0,0,0,30"/>
+
+            <Border Background="#111827"
+                    CornerRadius="25"
+                    Padding="30"
+                    Width="600">
+
+                <StackPanel>
+
+                    <CheckBox Content="Темна тема"
+                              Foreground="White"
+                              FontSize="20"
+                              Margin="0,0,0,20"/>
+
+                    <CheckBox Content="Live-оновлення матчів"
+                              Foreground="White"
+                              FontSize="20"
+                              Margin="0,0,0,20"/>
+
+                    <CheckBox Content="AI-аналітика"
+                              Foreground="White"
+                              FontSize="20"
+                              Margin="0,0,0,20"/>
+
+                    <TextBlock Text="API Status: Connected"
+                               Foreground="#00FF88"
+                               FontSize="18"
+                               Margin="0,20,0,0"/>
+
+                </StackPanel>
+
+            </Border>
+
+        </StackPanel>
+
+    </Grid>
+
+</Page>
