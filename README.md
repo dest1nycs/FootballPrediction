@@ -31,5 +31,5 @@ Profile
 
 ## Author
 
-Kyrylo Prokopenko
+Kyryl Prokopenko
 Software Engineering Student
