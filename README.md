@@ -22,12 +22,6 @@ Desktop application for football match analysis and prediction.
 - JSON
 - Football-data API
 
-## Screenshots
-
-Dashboard
-Leagues
-Predictions
-Profile
 
 ## Author
 
